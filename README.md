@@ -5,7 +5,7 @@ This app communicates with our custom-made R8M3 Laravel Api so that users can an
 ### Dependencies
 This project depends on multiple dependencies to make it possible to make a cross-platform, cross-device app powered with HTML, CSS, and Javascript.
 
-    * Open-source Apache Cordova project (the open-source port of Phonegap) [link](http://cordova.apache.org/docs/en/3.5.0/index.html). We are using the following Cordova plugins:
+    * Open-source Apache Cordova project (the open-source port of Phonegap) - http://cordova.apache.org/docs/en/3.5.0/index.html. We are using the following Cordova plugins:
     
         * Camera (org.apache.cordova.camera)
         
@@ -17,9 +17,9 @@ This project depends on multiple dependencies to make it possible to make a cros
         
         * File-Transfer (org.apache.cordova.file-transfer)
         
-    * Ionic Framework powered with Angular JS [link](http://ionicframework.com/)
+    * Ionic Framework powered with Angular JS - http://ionicframework.com/
     
-    * Angular JS, a powerful Model-View-Controller Javascript framework [link](https://angularjs.org/)
+    * Angular JS, a powerful Model-View-Controller Javascript framework - https://angularjs.org/
 
 
 ### Starting a project using this repository
@@ -52,4 +52,4 @@ Then Code On! When you're done coding, you will need to build your app and prepa
 
 
 ### Helpful tools
-    * [Ripple Emulator](https://chrome.google.com/webstore/detail/ripple-emulator-beta/geelfhphabnejjhdalkjhgipohgpdnoc?hl=en) to emulate how Cordova with Ionic will act like on a device. No need for lengthy emulation waiting or installing on a device.
+    * Ripple Emulator - https://chrome.google.com/webstore/detail/ripple-emulator-beta/geelfhphabnejjhdalkjhgipohgpdnoc?hl=en to emulate how Cordova with Ionic will act like on a device. No need for lengthy emulation waiting or installing on a device.

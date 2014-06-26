@@ -19,7 +19,7 @@ This project depends on multiple dependencies to make it possible to make a cros
         
     - Ionic Framework powered with Angular JS [link](http://ionicframework.com/)
     
-    - Angular JS, a powerful Model-View-Controller Javascript framework (link)[https://angularjs.org/]
+    - Angular JS, a powerful Model-View-Controller Javascript framework [link](https://angularjs.org/)
 
 
 ### Starting a project using this repository
@@ -37,19 +37,19 @@ Currently, R8M3 is being developed only for Android. You must first download the
 
 You are now ready to start an Ionic Framework/Angular JS powered project! Do the following command line commands
 
-    * ionic start <appName/folderName> <blank/tabs/sidemenu>
+* ionic start <appName/folderName> <blank/tabs/sidemenu>
     
-    * cd <appName/folderName>
+* cd <appName/folderName>
     
-    * cordova plugin add <pluginNames (as specified above)>
+* cordova plugin add <pluginNames (as specified above)>
     
-    * cd www
+* cd www
     
-    * git clone <this repository>
+* git clone <this repository>
     
 
 Then Code On! When you're done coding, you will need to build your app and prepare it, and sign certificates/push it on the Android App store. Follow the instructions on Cordova and Ionic's websites.
 
 
 ### Helpful tools
-    - [Ripple Emulator](https://chrome.google.com/webstore/detail/ripple-emulator-beta/geelfhphabnejjhdalkjhgipohgpdnoc?hl=en) to emulate how Cordova with Ionic will act like on a device. No need for lengthy emulation waiting or installing on a device.
+- [Ripple Emulator](https://chrome.google.com/webstore/detail/ripple-emulator-beta/geelfhphabnejjhdalkjhgipohgpdnoc?hl=en) to emulate how Cordova with Ionic will act like on a device. No need for lengthy emulation waiting or installing on a device.

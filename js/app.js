@@ -1,72 +1,95 @@
-// Ionic Starter App
+var app = angular.module('rateMeApp', ['ionic', 'rateMeApp.controllers', 'rateMeApp.services', 'ngCordova']);
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
-
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-    }
-    if(window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-})
-
-.config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
-
-    .state('app', {
-      url: "/app",
-      abstract: true,
-      templateUrl: "templates/menu.html",
-      controller: 'AppCtrl'
-    })
-
-    .state('app.search', {
-      url: "/search",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/search.html"
+app.run(function($ionicPlatform, $rootScope, $location, AuthService) {
+    $ionicPlatform.ready(function() {
+        if(window.cordova && window.cordova.plugins.Keyboard) {
+            cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         }
-      }
-    })
-
-    .state('app.browse', {
-      url: "/browse",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/browse.html"
+        if(window.StatusBar) {
+            // org.apache.cordova.statusbar required
+            StatusBar.styleDefault();
         }
-      }
-    })
-    .state('app.playlists', {
-      url: "/playlists",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/playlists.html",
-          controller: 'PlaylistsCtrl'
-        }
-      }
-    })
-
-    .state('app.single', {
-      url: "/playlists/:playlistId",
-      views: {
-        'menuContent' :{
-          templateUrl: "templates/playlist.html",
-          controller: 'PlaylistCtrl'
-        }
-      }
+        // Log the user in. He/she will automatically be logged in if he/she logged in before.
+        // And stuff are in LocalHost
+        AuthService.login();
+        
+        // Check logged in state for certain routes
     });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+});
+
+app.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
+
+    // Home, guestSnap, dashboard, gallery, gallerySingle views
+    $stateProvider.state('app', {
+        url: "/app",
+        abstract: true,
+        templateUrl: "templates/menu.html",
+        controller: 'AppCtrl'
+    });
+    $stateProvider.state('app.home', {
+        url: "/home",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/home.html"
+            }
+        }
+    });
+    $stateProvider.state('app.about', {
+        url: "/snap",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/about.html"
+            }
+        }
+    });
+    $stateProvider.state('app.snap', {
+        url: "/snap",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/snap.html",
+                controller: 'PictureCtrl'
+            }
+        }
+    });
+    $stateProvider.state('app.gallery', {
+        url: "/gallery",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/gallery/gallery.html",
+                controller: 'PictureCtrl'
+            }  
+        }
+    });
+    $stateProvider.state('app.gallerySingle', {
+        url: "/gallery/:imageId",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/gallery/gallerySingle.html",
+                controller: 'PictureCtrl'
+            }
+        }
+    });
+    $stateProvider.state('app.dashboard', {
+        url: "/dashboard",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/user/dashboard.html",
+                controller: 'AccountCtrl'
+            }
+        }
+    });
+    $stateProvider.state('app.settings', {
+        url: "/settings",
+        views: {
+            'menuContent' :{
+                templateUrl: "templates/user/settings.html",
+                controller: 'AccountCtrl'
+            }
+        }
+    });
+    $urlRouterProvider.otherwise('/app/home');
+    
+    $httpProvider.defaults.useXDomain = true;
+
 });
 

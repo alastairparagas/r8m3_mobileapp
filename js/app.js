@@ -35,7 +35,7 @@ app.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
         }
     });
     $stateProvider.state('app.about', {
-        url: "/snap",
+        url: "/about",
         views: {
             'menuContent' :{
                 templateUrl: "templates/about.html"

@@ -68,7 +68,6 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
         if(inputOrStorage === "storage"){
             that.setUser(aUsername, aPassword);
             messageBag.message = "Automatically logging in.";
-            alert('still running ' + aUsername);
             defer.resolve(messageBag);
         }else{
             $http.post("http://myrighttoplay.com/R8M3/public/api/v1/user/login", {'username': aUsername, 'password': aPassword})
@@ -84,6 +83,11 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
         return defer.promise;
     };
     
+    // Provides the Authentication headers conveniently packaged as an object
+    this.returnAuthHeaders = function(){
+          return 'Basic ' + this.encodedCredentials;
+    };
+    
     // Logs the user out and resets Authorization headers
     this.logout = function(){
         // Delete Basic Authorization set header
@@ -91,6 +95,7 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
         // Delete the username/password properties, set isLoggedIn to false
         delete this.username;
         delete this.password;
+        delete this.encodedCredentials;
         this.isLoggedIn = false;
         // Clear all localStorage data
         localStorage.clear();

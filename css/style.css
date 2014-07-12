@@ -1,1 +1,47 @@
-/* Empty. Add your own CSS if you like */
+.bar.bar-header {
+  background: #18395c !important;
+  border: #153250;
+  text-shadow: 0px 1px 3px #444; }
+  .bar.bar-header h1 {
+    color: #a4c6e8 !important; }
+
+.list .item {
+  background: #1d4670;
+  border: #0d2033;
+  color: #a4c6e8 !important; }
+  .list .item .input-label, .list .item p {
+    color: #a4c6e8 !important; }
+  .list .item input {
+    color: white !important; }
+  .list .item .item-content {
+    background: transparent; }
+
+.row h1, .row h2, .row h3, .row h4, .row h5, .row h6, .row p {
+  display: block;
+  width: 100%; }
+.row h1.highlight {
+  margin-bottom: 20px;
+  font-size: 45px; }
+.row .button i.icon {
+  color: rgba(255, 255, 255, 0.5);
+  margin-right: 10px; }
+
+.text-center {
+  text-align: center; }
+
+.menu .scroll-content.ionic-scroll {
+  background: #1d4670; }
+
+.modal {
+  background: #1d4670; }
+
+.notIn {
+  background: url("../img/background.jpg");
+  background-repeat: no-repeat; }
+  .notIn h1, .notIn h2, .notIn h3, .notIn h4, .notIn h5, .notIn h6, .notIn p {
+    color: #fff;
+    text-shadow: 0px 1px 3px #444; }
+  .notIn .button {
+    border: 0px;
+    box-shadow: 0px 0px 0px 0px #fff;
+    background: rgba(255, 255, 255, 0.1) !important; }

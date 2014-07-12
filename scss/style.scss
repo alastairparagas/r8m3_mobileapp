@@ -1,0 +1,68 @@
+@import "variables";
+
+.bar.bar-header{
+    background: darken($base-background-color, 5%) !important;
+    border: darken($base-background-color, 8%);
+    text-shadow:0px 1px 3px #444;
+    h1{
+        color: $base-color !important;
+    }
+}
+
+.list{ 
+    .item{
+        background: $base-background-color;
+        border: darken($base-background-color, 15%);
+        color: $base-color !important;
+        .input-label, p{
+            color: $base-color !important;
+        }
+        input{
+            color: white !important;   
+        }
+        .item-content{
+            background: transparent;   
+        }
+    }
+}
+
+.row{
+    h1, h2, h3, h4, h5, h6, p{
+        display:block;
+        width:100%;
+    }
+    h1.highlight{
+        margin-bottom:20px;
+        font-size:45px;
+    }
+    .button i.icon{
+        color: rgba(255, 255, 255, 0.5); 
+        margin-right: 10px;
+    }
+}
+
+.text-center{
+    text-align: center;   
+}
+
+.menu .scroll-content.ionic-scroll{
+    background: $base-background-color;
+}
+.modal{
+    background: $base-background-color;   
+}
+
+.notIn{
+    background: url('../img/background.jpg');
+    background-repeat: no-repeat;
+    h1,h2,h3,h4,h5,h6,p{
+        color: #fff;
+        text-shadow:0px 1px 3px #444;
+    }
+    .button{
+        border: 0px;
+        box-shadow: 0px 0px 0px 0px #fff;
+        background: rgba(#fff, 0.1) !important;
+    }
+    
+}

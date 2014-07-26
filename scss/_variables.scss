@@ -1,12 +1,51 @@
 $ionicons-font-path: "../lib/ionic/fonts" !default;
-$light: #fff;
-$stable: #95a5a6;
-$positive: #3498db;
-$calm: #1abc9c;
-$balanced: #2ecc71;
-$energized: #e98b39;
-$assertive: #e74c3c;
-$royal: #9B59B6;
-$dark: #34495E;
-$base-background-color: #1D4670;
-$base-color: lighten($base-background-color, 50%);
+
+// Our existing color palette: http://paletton.com/#uid=7330C0kbiNE3n+x7mWn8zNqcKI4
+
+$positive: #81A8CB;
+$calm: lighten($positive, 10%);
+$balanced: #7DD0AC;
+$energized: #FFD999;
+$assertive: #FFB699;
+$font-family-base: "Quicksand", sans-serif;
+
+$base-background-color:           #fff;
+$base-color:                      #444;
+
+$button-positive-text:            lighten($positive, 25%);
+$button-positive-border:          darken($positive, 5%);
+$button-positive-active-bg:       $button-positive-border;
+$button-positive-active-border:   $button-positive-border;
+
+$button-calm-text:                lighten($calm, 25%);
+$button-calm-border:              darken($calm, 5%);
+$button-calm-active-bg:           $button-calm-border;
+$button-calm-active-border:       $button-calm-border;
+
+$button-balanced-text:            lighten($balanced, 25%);
+$button-balanced-border:          darken($balanced, 5%);
+$button-balanced-active-bg:       $button-balanced-border;
+$button-balanced-active-border:   $button-balanced-border;
+
+$button-energized-text:           lighten($energized, 25%);
+$button-energized-border:         darken($energized, 5%);
+$button-energized-active-bg:      $button-energized-border;
+$button-energized-active-border:  $button-energized-border;
+
+$button-assertive-text:           lighten($assertive, 20%);
+$button-assertive-border:         darken($assertive, 5%);
+$button-assertive-active-bg:      $button-assertive-border;
+$button-assertive-active-border:  $button-assertive-border;
+
+$button-default-text:             $button-positive-text;
+$button-default-border:           $button-positive-border;
+$button-default-active-bg:        $button-positive-active-bg;
+$button-default-active-border:    $button-positive-active-border;
+
+$button-transparent-bg:           rgba(#ddd, 0.4);
+$button-transparent-text:         #fff;
+$button-transparent-border:       #d1d1d1;
+$button-transparent-active-bg:    rgba(#ddd, 0.7);
+$button-transparent-active-border:#ccc;
+
+$popup-width:                     300px;

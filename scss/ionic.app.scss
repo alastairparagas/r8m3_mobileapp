@@ -12,9 +12,29 @@
     font-family: 'SourceSansPro-Light';
     src: url('../fonts/SourceSansPro-Light.svg') format('svg'), url('../fonts/SourceSansPro-Light.woff') format('woff'), url('../fonts/SourceSansPro-Light.ttf') format('truetype');
 }
+@font-face{
+    font-family: 'Quicksand';
+    src: url('../fonts/Quicksand.svg') format('svg'), url('../fonts/Quicksand.woff') format('woff'), url('../fonts/Quicksand.ttf') format('truetype');
+}
 
 .Artbrush{ font-family: 'Artbrush', sans-serif; }
-.SourceSansProLight{ font-family: 'SourceSansPro-Regular', sans-serif; }
+.SourceSansProRegular{ font-family: 'SourceSansPro-Regular', sans-serif; }
+.SourceSansProLight{ font-family: 'SourceSansPro-Light', sans-serif; }
+.Quicksand{ font-family: 'Quicksand', sans-serif; }
 
 
-@import "../lib/ionic/scss/ionic";
+@import "../lib/ionic/scss/ionic.scss";
+
+// Transparent buttons and bars - we are extending Ionic's functionality
+.button{
+    &.button-transparent{
+        @include button-style($button-transparent-bg, $button-transparent-border, $button-transparent-active-bg, $button-transparent-active-border, $button-transparent-text);
+        @include button-clear($button-transparent-bg);
+        @include button-outline($button-transparent-bg);
+    }
+}
+.bar{
+    &.bar-transparent {
+        @include bar-style($button-transparent-bg, $button-transparent-border, $button-transparent-text);
+    }
+}

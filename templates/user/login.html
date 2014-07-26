@@ -1,16 +1,11 @@
-<div class="modal">
+<div class="modal" animation="fade-in">
     <ion-header-bar>
         <h1 class="title">Login</h1>
         <div class="buttons">
-            <button class="button button-clear" ng-click="login.modal.hide()">Close</button>
+            <button class="button button-positive icon ion-close" ng-click="login.modal.hide()"></button>
         </div>
     </ion-header-bar>
     <ion-content>
-        <div class="row">
-            <div class="col">
-                <p class="text-center">Login to R8M3. Score random pictures anonymously. Track your own pictures' scores.</p>
-            </div>
-        </div>
         <form name="login.data" ng-submit="login.submit()" novalidate>
             <div class="list">
                 <label class="item item-input">

@@ -1,51 +1,81 @@
 var module = angular.module('rateMeApp.controllers');
 
-module.controller('AppCtrl', function(AuthService, $scope, $ionicModal, $timeout, $cordovaNetwork, $cordovaCamera, $cordovaDialogs, $cordovaToast, $http) {
+module.controller('AppCtrl', function(AuthService, $ionicModal, $ionicSideMenuDelegate, $ionicPopup, $scope, $location, $cordovaNetwork, $cordovaToast) {
 
     $scope.register = {};
     $scope.login = {};
+    $scope.user = {};
     
+    
+    // Login and Register Modals
     $ionicModal.fromTemplateUrl('templates/user/login.html', {
         scope: $scope
     }).then(function(modal) {
         $scope.login.modal = modal;
     });
-    
     $ionicModal.fromTemplateUrl('templates/user/register.html', {
         scope: $scope
     }).then(function(modal) {
         $scope.register.modal = modal;
     });
     
+    // Checks if user is logged in.
     $scope.isLoggedIn = function(){
+        $scope.user.username = AuthService.username;
         return AuthService.isLoggedIn;
-    };
+    }
     
-    $scope.checkInternet = function(){
+    // Notifies whether the user is online or not.
+    $scope.isOnlineNotify = function(){
         if($cordovaNetwork.isOffline()){
             $cordovaToast.show("You currently have no internet connection.", "long", "bottom");
         }
+    }
+    
+    // Checks if device is online.
+    $scope.isOnline = function(){
         return $cordovaNetwork.isOnline();
     };
     
-    $scope.login.submit = function() {
+    
+    // Tries to log the person in
+    $scope.login.submit = function() { 
+        
+        $scope.isOnlineNotify();
+        delete $scope.login.message;
+        
         AuthService.login($scope.login.data.username, $scope.login.data.password)
         .then(
             function (data){
                 $scope.login.modal.hide();
+                delete $scope.login.data;
+                $location.path('/app/gallery');
             },
             function (data){
                 $scope.login.message = data.message;
             }
         );
-        
     };
     
+    
+    // Logs the user out and redirects back to home page
+    $scope.login.logout = function(){
+        AuthService.logout();
+        $location.path('/app/home');
+    };
+    
+    
+    // Registers the user and automatically logs them in
     $scope.register.submit = function() {
+        
+        $scope.isOnlineNotify();
+        delete $scope.register.message;
+        
          AuthService.register($scope.register.data)
          .then(
              function (data){
-                $scope.register.modal.hide();      
+                $scope.register.modal.hide();
+                delete $scope.register.data;
              },
              function (data){
                  $scope.register.message = data.message;
@@ -53,27 +83,17 @@ module.controller('AppCtrl', function(AuthService, $scope, $ionicModal, $timeout
          );
     };
     
-    
-    $scope.takePicture = function() {
-        // Cordova Camera Options https://github.com/apache/cordova-plugin-camera/blob/master/doc/index.md
-        var options = { 
-            quality : 100, 
-            destinationType : Camera.DestinationType.FILE_URI, 
-            sourceType : Camera.PictureSourceType.CAMERA, 
-            allowEdit : true,
-            encodingType: Camera.EncodingType.PNG,
-            targetWidth: 1300,
-            targetHeight: 1300,
-            saveToPhotoAlbum: false
-        };
-        // Take a picture, redirect to page with passed image location
-        $cordovaCamera.getPicture(options).then(function(imageData) {
-            $cordovaDialogs.alert(imageData);
-        }, function(err) {
-            $cordovaToast.show("Picture not taken", "long", "bottom");
+    $scope.about = function() {
+        $ionicPopup.alert({
+            title: 'About R8M3',
+            template: 'R8M3 is an anonymous photo-sharing and rating application designed by Alastair Paragas and Anil Jason of Stela Inc. Copyright 2014. <br/><br/> If you have any suggestions or recommendations on how we can best improve the app, do not hesitate to contact us at us@r8m3.com. <br/><br/> Interested in Stela? We are a group of active programmers and designers bent on creating products that promote freedom and transparency.'
         });
     };
     
+    
+    $scope.disableSideMenu = function() {
+        $ionicSideMenuDelegate.canDragContent(false);  
+    };
     
 });
 

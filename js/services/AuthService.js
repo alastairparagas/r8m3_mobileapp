@@ -7,6 +7,7 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
     // Use an object to prevent too much global variables - very bad.
     // See Douglas Crockford's "Javascript: The Good Parts"
     this.isLoggedIn = false;
+    this.username = null;
     
     // Helper methods for our Authentication service
     // Set the Authentication properties
@@ -41,7 +42,8 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
         
         // If already logged in, resolve the promise!
         if(this.isLoggedIn === true && this.username != "undefined" && this.password != "undefined"){
-            return true;
+            defer.resolve({message: "Already logged in"});
+            return defer.promise;
         }
         
         // Variable to hold the decision. If no username/password was provided, that is a command to check localStorage instead
@@ -60,7 +62,8 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
         
         // If username|password variables are still undefined at this point, then do not authenticate
         if(typeof aUsername == "undefined" || typeof aPassword == "undefined"){
-            return false;
+            defer.reject({mesage: "Username and/or password not provided."});
+            return defer.promise;
         }
         
         // If storage, only set the Object properties using the localStorage stored information, else
@@ -85,7 +88,11 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
     
     // Provides the Authentication headers conveniently packaged as an object
     this.returnAuthHeaders = function(){
-          return 'Basic ' + this.encodedCredentials;
+        var AuthHeaderObject;
+        if(typeof this.encodedCredentials != "undefined"){
+            AuthHeaderObject = {'Authorization': 'Basic ' + this.encodedCredentials};
+        }
+        return AuthHeaderObject;
     };
     
     // Logs the user out and resets Authorization headers
@@ -109,7 +116,7 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
         var defer = $q.defer();
         var that = this;
         
-        $http.post("http://myrighttoplay.com/R8M3/public/api/v1/user/register", infoData)
+        $http.post("http://myrighttoplay.com/R8M3/public/api/v1/user/add", infoData)
         .success( function(data){
             // Log them in
             that.setUser(infoData.username, infoData.password);

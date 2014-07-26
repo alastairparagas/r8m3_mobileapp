@@ -1,43 +1,66 @@
 var app = angular.module('rateMeApp', ['ionic', 'rateMeApp.controllers', 'rateMeApp.services', 'ngCordova']);
 
-app.run(function($ionicPlatform, $rootScope, $location, AuthService) {
-    $ionicPlatform.ready(function() {
-        if(window.cordova && window.cordova.plugins.Keyboard) {
+
+app.run(function($ionicPlatform, $rootScope, $state, $location, AuthService) {
+    $ionicPlatform.ready(function () {
+        if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
         }
-        if(window.StatusBar) {
+        if (window.StatusBar) {
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
-        // Log the user in. He/she will automatically be logged in if he/she logged in before.
-        // And stuff are in LocalHost
-        AuthService.login();
-        
-        // Check logged in state for certain routes
+        // Log the user in. He/she will automatically be logged if data in localStorage,
+        // and redirected to the gallery
+        AuthService.login().then(
+            function(data){
+                $location.path('/app/gallery');   
+            }
+        );
+        // Listen to route changes and if not correct Auth type, redirect
+        $rootScope.$on('$stateChangeStart', function (event, nextState, currenState) {
+            if (nextState.data.authType === "onlyNoAuth" && AuthService.isLoggedIn) {
+                event.preventDefault();
+                $state.go('app.gallery');
+            }
+            if (nextState.data.authType === "onlyAuth" && !AuthService.isLoggedIn) {
+                event.preventDefault();
+                $state.go('app.home');
+            }
+        });
     });
 });
 
-app.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
 
-    // Home, guestSnap, dashboard, gallery, gallerySingle views
+app.config(function ($httpProvider, $stateProvider, $urlRouterProvider) {
+
+    // Home, About, Snap, Gallery, Dashboard, Settings Pages
+    // Auth Types: 
+    //      onlyAuth - allow user to see the page only if logged in
+    //      onlyNoAuth - allow the user to see the page only if not logged in
     $stateProvider.state('app', {
         url: "/app",
         abstract: true,
         templateUrl: "templates/menu.html",
         controller: 'AppCtrl'
     });
+    
     $stateProvider.state('app.home', {
         url: "/home",
         views: {
-            'menuContent' :{
-                templateUrl: "templates/home.html"
+            'menuContent': {
+                templateUrl: "templates/home.html",
+                controller: 'PictureCtrl'
             }
+        },
+        data: {
+            authType: 'onlyNoAuth' 
         }
     });
     $stateProvider.state('app.about', {
         url: "/about",
         views: {
-            'menuContent' :{
+            'menuContent': {
                 templateUrl: "templates/about.html"
             }
         }
@@ -45,7 +68,7 @@ app.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
     $stateProvider.state('app.snap', {
         url: "/snap",
         views: {
-            'menuContent' :{
+            'menuContent': {
                 templateUrl: "templates/snap.html",
                 controller: 'PictureCtrl'
             }
@@ -54,37 +77,37 @@ app.config(function($httpProvider, $stateProvider, $urlRouterProvider) {
     $stateProvider.state('app.gallery', {
         url: "/gallery",
         views: {
-            'menuContent' :{
+            'menuContent': {
                 templateUrl: "templates/gallery/gallery.html",
                 controller: 'PictureCtrl'
             }  
-        }
-    });
-    $stateProvider.state('app.gallerySingle', {
-        url: "/gallery/:imageId",
-        views: {
-            'menuContent' :{
-                templateUrl: "templates/gallery/gallerySingle.html",
-                controller: 'PictureCtrl'
-            }
+        },
+        data: {
+            authType: 'onlyAuth'
         }
     });
     $stateProvider.state('app.dashboard', {
         url: "/dashboard",
         views: {
-            'menuContent' :{
+            'menuContent': {
                 templateUrl: "templates/user/dashboard.html",
                 controller: 'AccountCtrl'
             }
+        },
+        data: {
+            authType: 'onlyAuth'
         }
     });
     $stateProvider.state('app.settings', {
         url: "/settings",
         views: {
-            'menuContent' :{
+            'menuContent': {
                 templateUrl: "templates/user/settings.html",
                 controller: 'AccountCtrl'
             }
+        },
+        data: {
+            authType: 'onlyAuth'
         }
     });
     $urlRouterProvider.otherwise('/app/home');

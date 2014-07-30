@@ -1,7 +1,7 @@
 var app = angular.module('rateMeApp', ['ionic', 'rateMeApp.controllers', 'rateMeApp.services', 'ngCordova']);
 
 
-app.run(function($ionicPlatform, $rootScope, $state, $location, AuthService) {
+app.run(function($ionicPlatform, $state, $rootScope, AuthService) {
     $ionicPlatform.ready(function () {
         if (window.cordova && window.cordova.plugins.Keyboard) {
             cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -14,11 +14,14 @@ app.run(function($ionicPlatform, $rootScope, $state, $location, AuthService) {
         // and redirected to the gallery
         AuthService.login().then(
             function(data){
-                $location.path('/app/gallery');   
+                $state.go('app.gallery'); 
             }
         );
         // Listen to route changes and if not correct Auth type, redirect
         $rootScope.$on('$stateChangeStart', function (event, nextState, currenState) {
+            if( !nextState.data || !nextState.data.authType ){
+                return;   
+            }
             if (nextState.data.authType === "onlyNoAuth" && AuthService.isLoggedIn) {
                 event.preventDefault();
                 $state.go('app.gallery');
@@ -84,6 +87,12 @@ app.config(function ($httpProvider, $stateProvider, $urlRouterProvider) {
         },
         data: {
             authType: 'onlyAuth'
+        },
+        onEnter: function($ionicSideMenuDelegate) {
+            $ionicSideMenuDelegate.canDragContent(false);
+        },
+        onExit: function($ionicSideMenuDelegate) {
+            $ionicSideMenuDelegate.canDragContent(true);
         }
     });
     $stateProvider.state('app.dashboard', {

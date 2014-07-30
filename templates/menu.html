@@ -19,11 +19,11 @@
                 <ion-item nav-clear menu-close class="item-icon-right" href="#/app/home">
                     <i class="icon ion-home"></i> Home
                 </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-right" href="#/app/snap">
+                    <i class="icon ion-android-camera"></i> Snap
+                </ion-item>
                 <ion-item nav-clear menu-close class="item-icon-right" ng-click="login.modal.show()">
                     <i class="icon ion-log-in"></i> Login
-                </ion-item>
-                <ion-item nav-clear menu-close class="item-icon-right" href="#/app/snap">
-                    <i class="icon ion-android-camera"></i> Guest Snap
                 </ion-item>
                 <ion-item nav-clear menu-close class="item-icon-right" ng-click="register.modal.show()">
                     <i class="icon ion-android-hand"></i> Sign Up
@@ -36,8 +36,11 @@
                 <ion-item nav-clear menu-close class="item-icon-right" href="#/app/gallery">
                     <i class="icon ion-home"></i> Home
                 </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-right" href="#/app/snap">
+                    <i class="icon ion-android-camera"></i> Snap
+                </ion-item>
                 <ion-item nav-clear menu-close class="item-icon-right" href="#/app/search">
-                    <i class="icon ion-clipboard"></i> Search Snaps
+                    <i class="icon ion-search"></i> Search Snaps
                 </ion-item>
                 <ion-item nav-clear menu-close class="item-icon-right" href="#/app/dashboard">
                     <i class="icon ion-clipboard"></i> My Snaps
@@ -47,6 +50,9 @@
                 </ion-item>
                 <ion-item nav-clear menu-close class="item-icon-right" ng-click="login.logout()">
                     <i class="icon ion-log-out"></i> Logout
+                </ion-item>
+                <ion-item nav-clear menu-close ng-click="about()">
+                    About R8M3
                 </ion-item>
             </ion-list>
         </ion-content>

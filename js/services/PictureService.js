@@ -1,4 +1,4 @@
-angular.module('rateMeApp.services').service('PictureService', function(AuthService, $q, $http, $state, $cordovaNetwork, $cordovaToast, $cordovaFile, $cordovaCamera) {
+angular.module('rateMeApp.services').service('PictureService', function(AuthService, $q, $state, $cordovaNetwork, $cordovaToast, $cordovaFile, $cordovaCamera) {
     
     // Provides the camera interface and takes picture
     this.takePicture = function () {

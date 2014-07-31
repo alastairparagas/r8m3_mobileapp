@@ -82,7 +82,7 @@ app.config(function ($httpProvider, $stateProvider, $urlRouterProvider) {
         views: {
             'menuContent': {
                 templateUrl: "templates/gallery/gallery.html",
-                controller: 'PictureCtrl'
+                controller: 'GalleryCtrl'
             }  
         },
         data: {

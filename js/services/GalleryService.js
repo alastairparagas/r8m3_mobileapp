@@ -1,7 +1,7 @@
-angular.module('rateMeApp.services').service('GalleryService', function(AuthService, $cordovaNetwork, $cordovaToast, $http){
+angular.module('rateMeApp.services').service('GalleryService', function(AuthService, $cordovaNetwork, $cordovaToast, $http, $q){
     
     var pictures = (localStorage.pictures && JSON.parse(localStorage.pictures)) || {};
-    var pictureCounter = 0;
+    var pictureCounter = Object.keys(pictures).length;
     
     // Gets random pictures from server for user to view and rate and adds them
     // to our pictures associative array.
@@ -32,12 +32,28 @@ angular.module('rateMeApp.services').service('GalleryService', function(AuthServ
                  pictures = {}
                  pictureCounter = 0;
             }
+            // For image provided image
             for(var i = 0, len = data.info.length; i < len; i++){
                 currentImage = data.info[i];
+                // If first image in set, check if it's the same as localStorage's first image. If they are, same set of images - do not concatenate to localStorage!
+                if(i === 0){
+                    if(currentImage.id in pictures){
+                        break;
+                    }
+                }
+                // If current user is in the ratees list of image, they rated this image already. Do appropriate manipulation of object so we can notify view/controller
+                if(AuthService.userid && AuthService.userid != 0){
+                    for(var currentRatee = 0, ratees = currentImage.ratees, rateesCount = ratees.length; currentRatee < rateesCount; currentRatee++){
+                        if(AuthService.userid == ratees[currentRatee].user_id){
+                            currentImage.hasRated = true;
+                        }
+                    }
+                }
                 pictures[currentImage.id] = currentImage;
+                delete currentImage.ratees;
                 pictureCounter++;
             }
-            localStorage.pictures = pictures;
+            localStorage.pictures = JSON.stringify(pictures);
             defer.resolve(pictures);
         }).error(function(data){
             defer.reject({message: "Cannot retrieve images. " + data.message});
@@ -69,11 +85,11 @@ angular.module('rateMeApp.services').service('GalleryService', function(AuthServ
     // picture's associative array (object).
     this.getPictureAtIndex = function(index){
         var iterator = 0;
-        for(imageId in pictures){
+        for(var imageId in pictures){
             if(!pictures.hasOwnProperty(imageId)){
                continue;
             }
-            if(iterator == index){
+            if(iterator === index){
                 return pictures[imageId];   
             }
             iterator++;

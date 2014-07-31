@@ -12,7 +12,7 @@ angular.module('rateMeApp.services').service('AuthService', function(Base64, $q,
     this.userid = 0;
     this.username = null;
     this.password = null;
-    var settings = {}
+    var settings = {};
     var settingsDefaults = {
         smartUpload: true
     };

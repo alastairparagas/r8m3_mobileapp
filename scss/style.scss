@@ -9,8 +9,8 @@
 }
 
 .animated.fadeInDown{
-    animation-duration: 2s;
-    -webkit-animation-duration: 2s;
+    animation-duration: 1s;
+    -webkit-animation-duration: 1s;
     animation-delay: 1s;
     -webkit-animation-delay: 1s;
 }
@@ -39,10 +39,27 @@
     border: 0px;
 }
 
-img.fullScreen{
-    display: block;
-    width: 100%;
-    height: auto;
+img{
+    .block{
+        display: block;
+    }
+    .responsive{
+        @extend .block;
+        width: 100%;
+        height: auto;
+    }
+}
+
+.imgNormalizer{
+    position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
+    img{
+        @extend .block;
+    }
 }
 
 #snapUpload{
@@ -51,7 +68,7 @@ img.fullScreen{
     z-index: 10;
     width: 100%;
     height: 0%;
-    transition: height 1s;
+    transition: height 2s;
     filter: blur(20px);
     h1,h2,h3,h4,h5,h6,p{
         color: white;

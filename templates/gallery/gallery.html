@@ -2,7 +2,9 @@
     <ion-pane>
         <ion-slide-box on-slide-changed="imageChange($index)" show-pager="false">
             <ion-slide ng-repeat="(currentPictureId, currentPicture) in pictures">
-                <img class="fullScreen" ng-src="{{currentPicture.file}}" />
+                <div class="imgNormalizer">
+                    <img ng-src="{{currentPicture.file}}" />
+                </div>
             </ion-slide>
             <ion-slide>
                 

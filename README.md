@@ -1,88 +1,33 @@
-Ionic App Base
-=====================
+# R8M3 Mobile App
 
-A starting project for Ionic that optionally supports
-using custom SCSS.
-
-## Using this project
-
-We recommend using the `ionic` utility to create new Ionic projects that are based on this project but use a ready-made starter template.
-
-For example, to start a new Ionic project with the default tabs interface, make sure the `ionic` utility is installed:
-
-```bash
-$ sudo npm install -g ionic
-```
-
-Then run:
-
-```bash
-$ sudo npm install -g ionic
-$ ionic start myProject tabs
-```
-
-More info on this can be found on the Ionic [Getting Started](http://ionicframework.com/getting-started) page.
-
-## Installation
-
-While we recommend using the `ionic` utility to create new Ionic projects, you can use this repo as a barebones starting point to your next Ionic app.
-
-To use this project as is, first clone the repo from GitHub, then run:
-
-```bash
-$ cd ionic-app-base
-$ sudo npm install -g cordova ionic gulp
-$ npm install
-$ gulp install
-```
-
-## Using Sass (optional)
-
-This project makes it easy to use Sass (the SCSS syntax) in your projects. This enables you to override styles from Ionic, and benefit from
-Sass's great features.
-
-Just update the `./scss/ionic.app.scss` file, and run `gulp` or `gulp watch` to rebuild the CSS files for Ionic.
-
-Note: if you choose to use the Sass method, make sure to remove the included `ionic.css` file in `index.html`, and then uncomment
-the include to your `ionic.app.css` file which now contains all your Sass code and Ionic itself:
-
-```html
-<!-- IF using Sass (run gulp sass first), then remove the CSS include above
-<link href="css/ionic.app.css" rel="stylesheet">
--->
-```
-
-## Updating Ionic
-
-To update to a new version of Ionic, open bower.json and change the version listed there.
-
-For example, to update from version `1.0.0-beta.4` to `1.0.0-beta.5`, open bower.json and change this:
-
-```
-"ionic": "driftyco/ionic-bower#1.0.0-beta.4"
-```
-
-To this:
-
-```
-"ionic": "driftyco/ionic-bower#1.0.0-beta.5"
-```
-
-After saving the update to bower.json file, run `gulp install`.
-
-Alternatively, install bower globally with `npm install -g bower` and run `bower install`.
-
-#### Using the Nightly Builds of Ionic
-
-If you feel daring and want use the bleeding edge 'Nightly' version of Ionic, change the version of Ionic in your bower.json to this:
-
-```
-"ionic": "driftyco/ionic-bower#master"
-```
-
-Warning: the nightly version is not stable.
+R8M3 is a hybrid mobile application powered by [Cordova](http://cordova.apache.org/), a cross-platform mobile framework for web applications, complete with native APIs. R8M3 connects with our backend server powered by the Laravel PHP framework - the codebase for that project lives in a [different repository](https://bitbucket.org/forfronttechnology/r8m3). 
 
 
-## Issues
-Issues have been disabled on this repo, if you do find an issue or have a question consider posting it on the [Ionic Forum](http://forum.ionicframework.com/).  Or else if there is truly an error, follow our guidelines for [submitting an issue](http://ionicframework.com/contribute/#issues) to the main Ionic repository. On the other hand, pull requests are welcome here!
+## Initializing this project
 
+Currently, R8M3 is being developed only for Android. You must first download the Android SDK, several Android dependencies and set the appropriate system environment paths.
+
+- Download the latest Java Development Kit (JDK), Android SDK/ADT Bundle, Apache Ant, and Node Package Manager
+    
+- Set environment paths to the JDK's bin folder, Android SDK's tools and platform-tools folder, and Apache Ant's bin folder
+
+- Install [Node.js](http://nodejs.org/) into your computer.
+
+- `git clone` this repository into a local folder
+
+- `cd` into the folder where you cloned this repository. At the root of that folder (where you see hooks/, www/, merges/), execute `npm install` to install all of our Node.js tools. 
+
+	* These tools help us automate certain tasks like minifying our scripts during production for faster performance of the app, automatic SASS to CSS conversion, JSDoc documentation generation, and many more. We run a task runner named [Gulp](http://gulpjs.com/). To learn more about Gulp, [go here](https://github.com/gulpjs/gulp/blob/master/README.md#gulp-----);
+
+- `cordova platform add <platform-name>` to add a platform. In this case, we are developing on Android, so you would `cordova platform add android`. Remember to do this on the root of your local folder where this repository was cloned to.
+
+
+## Helpful development tools
+
+- [Ionic Framework](http://ionicframework.com/) is an Android 4.0^ framework that helps us develop beautiful applications. It is practically the Bootstrap of mobile development.
+
+- [Angular](https://angularjs.org/) is a Model-View-Controller Javascript framework that keeps our logic organized, and is integrated tightly with Ionic.
+
+- [Ripple Emulator] (https://www.npmjs.org/package/ripple-emulator) emulates how our app will work, right on our browser. 
+
+	* `npm install ripple-emulator` on our root folder (DO NOT ADD --save or --save-dev flags because we don't want this in our package.json) and `ripple emulate` to emulate our app in the browser

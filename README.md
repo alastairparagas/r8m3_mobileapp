@@ -17,7 +17,7 @@ Currently, R8M3 is being developed only for Android. You must first download the
 
 - `cd` into the folder where you cloned this repository. At the root of that folder (where you see hooks/, www/, merges/), execute `npm install` to install all of our Node.js tools. 
 
-	* These tools help us automate certain tasks like minifying our scripts during production for faster performance of the app, automatic SASS to CSS conversion, JSDoc documentation generation, and many more. We run a task runner named [Gulp](http://gulpjs.com/). To learn more about Gulp, [go here](https://github.com/gulpjs/gulp/blob/master/README.md#gulp-----);
+	* These tools help us automate certain tasks like minifying our scripts during production for faster performance of the app, automatic SASS to CSS conversion, JSDoc documentation generation, and many more. We run a task runner named [Gulp](http://gulpjs.com/). To learn more about Gulp, [go here](https://github.com/gulpjs/gulp/blob/master/README.md#gulp-----). We also use [Bower](http://bower.io/docs/api/) to manage all of our front-end dependencies (javascript libraries, css scripts, and many more).
 
 - `cordova platform add <platform-name>` to add a platform. In this case, we are developing on Android, so you would `cordova platform add android`. Remember to do this on the root of your local folder where this repository was cloned to.
 

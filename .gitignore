@@ -1,2 +1,4 @@
-.brackets.json
-.sass-cache
+www/.sass-cache
+plugins/
+platforms/
+node_modules/

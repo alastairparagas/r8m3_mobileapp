@@ -1,0 +1,27 @@
+{
+  "name": "HelloIonic",
+  "private": "true",
+  "dependencies": {
+    "ionic": "driftyco/ionic-bower#1.0.0-beta.8",
+    "imgcache.js": "~0.7.2",
+    "ngCordova": "alastairparagas/ng-cordova#~0.1.3-alpha",
+    "animate.css": "~3.2.0"
+  },
+  "overrides": {
+	"angular": {
+		"main": " "
+	},
+	"angular-animate": {
+		"main": " "
+	},
+	"angular-sanitize": {
+		"main": " "
+	},
+	"angular-ui-router": {
+		"main": " "
+	},
+	"ionic": {
+		"main": "js/ionic.bundle.min.js"
+	}
+  }
+}

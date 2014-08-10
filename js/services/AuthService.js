@@ -6,8 +6,7 @@
     
     angular.module('rateMeApp.services').service('AuthService', ['Base64', '$q', '$http', '$cordovaNetwork', '$cordovaToast', function (Base64, $q, $http, $cordovaNetwork, $cordovaToast) {
 
-        // Use an object to prevent too much global variables - very bad.
-        // See Douglas Crockford's "Javascript: The Good Parts"
+        
         this.isLoggedIn = false;
         this.userid = 0;
         this.username = null;
@@ -17,13 +16,11 @@
                 smartUpload: true
             };
 
-        // Helper methods for our Authentication service
         // Set the Authentication properties
         this.setUser = function (username, password, userid) {
             var settingsKey;
             
             this.encodedCredentials = Base64.encode(username + ":" + password);
-            // Set Angular Authorization headers for Stateless HTTP Basic
             $http.defaults.headers.common.Authorization = 'Basic ' + this.encodedCredentials;
             this.userid = userid;
             this.username = username;
@@ -177,6 +174,7 @@
             return defer.promise;
         };
 
+        
     }]);
     
     

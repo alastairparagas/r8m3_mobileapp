@@ -28,6 +28,6 @@ Currently, R8M3 is being developed only for Android. You must first download the
 
 - [Angular](https://angularjs.org/) is a Model-View-Controller Javascript framework that keeps our logic organized, and is integrated tightly with Ionic.
 
-- [Ripple Emulator] (https://www.npmjs.org/package/ripple-emulator) emulates how our app will work, right on our browser. 
+- [Ripple Emulator](https://www.npmjs.org/package/ripple-emulator) emulates how our app will work, right on our browser. 
 
 	* `npm install ripple-emulator` on our root folder (DO NOT ADD --save or --save-dev flags because we don't want this in our package.json) and `ripple emulate` to emulate our app in the browser

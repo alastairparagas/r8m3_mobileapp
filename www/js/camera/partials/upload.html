@@ -1,0 +1,40 @@
+<ion-view>
+    
+    <ion-pane scroll="false">
+        <img class="responsive" ng-src="{{ picture }}" id="imageUploadStage" />
+        
+        <div id="snapUpload" class="row row-center" ng-show="uploadProgress" 
+             ng-style="{ 'height': uploadProgress + '%' }" ng-class="uploadFailed ? 'failed' : 'notFailed'">
+            <div class="col">
+                <span ng-hide="uploadFailed">
+                    <h1>{{ uploadProgress || 0 }}% Uploaded</h1>
+                    <h2 ng-show="uploadProgress === 100">Image code: {{ uploadResponse.info.id }}</h2>
+                </span>
+                <span ng-show="uploadFailed">
+                    <h1>Upload Failed.</h1>
+                    <h2 ng-show="uploadResponse.message">{{ uploadResponse.message }}</h2>
+                </span>
+            </div>
+        </div>
+        
+    </ion-pane>
+    
+    <ion-footer-bar class="bar-balanced">
+        <div class="col-33 text-center">
+            <a class="button button-clear" href="#/app/camera-snap">
+                <i class="customIcon icon icon-action-undo"></i>
+            </a>
+        </div>
+        <div class="col-33 text-center">
+            <a class="button button-clear" href="#/app/home">
+                <i class="customIcon icon icon-home"></i>
+            </a>
+        </div>
+        <div class="col-33 text-center">
+            <button class="button button-clear" ng-click="uploadPicture()" ng-disabled="uploadFailed">
+                <i class="customIcon icon icon-cloud-upload"></i>
+            </button>
+        </div>
+    </ion-footer-bar>
+    
+</ion-view>

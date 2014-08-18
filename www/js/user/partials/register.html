@@ -1,0 +1,37 @@
+<div class="modal">
+    <ion-header-bar>
+        <h1 class="title">Create an Account</h1>
+        <div class="buttons">
+            <button class="button button-positive icon ion-close" ng-click="register.modal.hide()"></button>
+        </div>
+    </ion-header-bar>
+    <ion-content>
+        <form name="register.data" ng-submit="register.submit()" novalidate>
+            <div class="list">
+                <label class="item item-input">
+                    <span class="input-label">Email Address</span>
+                    <input type="email" ng-model="register.data.email" placeholder="e.g. johndoe@gmail.com" required>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text" ng-model="register.data.username" placeholder="Between 3 to 16 characters" ng-minlength="3" ng-maxlength="16" required>
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="password" ng-model="register.data.password" placeholder="Between 5 to 16 characters" ng-minlength="5" ng-maxlength="16" required>
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit" ng-disabled="register.data.$invalid">Create an Account</button>
+                </label>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col">
+                <p class="text-center" ng-show="register.error">
+                    {{ register.message }}
+                </p>
+            </div>
+        </div>
+
+    </ion-content>
+</div>

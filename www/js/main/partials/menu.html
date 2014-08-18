@@ -1,0 +1,63 @@
+<ion-side-menus>
+
+    <ion-pane ion-side-menu-content>
+        <ion-nav-bar class="no-background">
+            <div class="buttons">
+                <button menu-toggle="left" class="button button-light button-outline icon ion-navicon"></button>
+            </div>
+        </ion-nav-bar>
+        <ion-nav-view name="appContent" animation="slide-left-right">
+        </ion-nav-view>
+    </ion-pane>
+
+    <ion-side-menu side="left">
+        <ion-header-bar>
+                <p class="padding-vertical block-center">Main Menu</p>
+        </ion-header-bar>
+        <ion-content class="has-header">
+            <ion-list ng-hide="isLoggedIn()">
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/home">
+                    <i class="icon icon-home"></i> Home
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/camera-snap">
+                    <i class="icon icon-camera"></i> Snap a Picture
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" ng-click="login.modal.show()">
+                    <i class="icon icon-login"></i> Login
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" ng-click="register.modal.show()">
+                    <i class="icon icon-users"></i> Sign Up
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" ng-click="about()">
+                    <i class="icon icon-question"></i> About R8M3
+                </ion-item>
+            </ion-list>
+            <ion-list ng-show="isLoggedIn()">
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/gallery-home">
+                    <i class="icon icon-home"></i> Home
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/camera-snap">
+                    <i class="icon icon-camera"></i> Snap a Picture
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/gallery-search">
+                    <i class="icon icon-globe"></i> Search Snaps
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/user-dashboard">
+                    <i class="icon icon-picture"></i> My Snaps
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" href="#/app/user-settings">
+                    <i class="icon icon-settings"></i> Settings
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" ng-click="login.logout()">
+                    <i class="icon icon-logout"></i> Logout
+                </ion-item>
+                <ion-item nav-clear menu-close class="item-icon-left" ng-click="about()">
+                    <i class="icon icon-question"></i> About R8M3
+                </ion-item>
+            </ion-list>
+        </ion-content>
+        <ion-footer-bar class="bar-balanced">
+            <p class="padding-vertical block-center">R8M3 for Android. Stela 2014</p>
+        </ion-footer-bar>
+    
+</ion-side-menus>

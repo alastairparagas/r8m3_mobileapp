@@ -1,7 +1,6 @@
 {
   "name": "ionic",
-  "version": "1.0.0-beta.8",
-  "codename": "einsteinium-emu",
+  "codename": "indium-iguana",
   "homepage": "https://github.com/driftyco/ionic",
   "authors": [
     "Max Lynch <max@drifty.com>",
@@ -10,10 +9,10 @@
   ],
   "description": "Advanced HTML5 hybrid mobile app development framework.",
   "main": [
-    "css/ionic.css",
-    "fonts/*",
-    "js/ionic.js",
-    "js/ionic-angular.js"
+    "release/css/ionic.css",
+    "release/fonts/*",
+    "release/js/ionic.js",
+    "release/js/ionic-angular.js"
   ],
   "keywords": [
     "mobile",
@@ -28,19 +27,40 @@
   ],
   "license": "MIT",
   "private": false,
+  "ignore": [
+    "**/.*",
+    "CONTRIBUTING.md",
+    "Gruntfile.js",
+    "component.json",
+    "config",
+    "examples",
+    "package.json",
+    "release/js/angular",
+    "release/js/angular-ui",
+    "scripts",
+    "test",
+    "js/controllers",
+    "js/ext",
+    "js/utils",
+    "js/views",
+    "js/_license.js",
+    "js/ionic.js"
+  ],
   "dependencies": {
     "angular": "~1.2.17",
     "angular-animate": "~1.2.17",
     "angular-sanitize": "~1.2.17",
-    "angular-ui-router": "0.2.10"
+    "angular-ui-router": "0.2.10",
+    "collide": "1.0.0-beta.1"
   },
-  "_release": "1.0.0-beta.8",
+  "_release": "ce3f035595",
   "_resolution": {
-    "type": "version",
-    "tag": "v1.0.0-beta.8",
-    "commit": "1ed3ae279814dc8bae9cc67fee599c916a89c3c2"
+    "type": "branch",
+    "branch": "master",
+    "commit": "ce3f0355957cfab93a3ce005acda4accbda1ab8b"
   },
-  "_source": "git://github.com/driftyco/ionic-bower.git",
-  "_target": "1.0.0-beta.8",
-  "_originalSource": "driftyco/ionic-bower"
+  "_source": "git://github.com/driftyco/ionic.git",
+  "_target": "master",
+  "_originalSource": "ionic",
+  "_direct": true
 }

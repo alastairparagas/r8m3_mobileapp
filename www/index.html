@@ -12,24 +12,35 @@
 		<link href="css/style.css" rel="stylesheet">
 		
 		<!-- bower:js -->
-		<script src="bower_components/ionic/js/ionic.bundle.min.js"></script>
+		<script src="bower_components/es5-shim/es5-shim.js"></script>
+		<script src="bower_components/ionic/release/js/ionic.bundle.min.js"></script>
+        <script src="bower_components/ngCordova/dist/ng-cordova.min.js"></script>
 		<script src="bower_components/imgcache.js/js/imgcache.js"></script>
-		<script src="bower_components/ngCordova/dist/ng-cordova.js"></script>
+        <script src="bower_components/J-I-C/src/JIC.js"></script>
 		<!-- endbower -->
 		<script src="cordova.js"></script>
-		<script src="js/app.js"></script>
-		<script src="js/controllers/ControllerDeclare.js"></script>
-		<script src="js/controllers/AppCtrl.js"></script>
-		<script src="js/controllers/PictureCtrl.js"></script>
-		<script src="js/controllers/GalleryCtrl.js"></script>
-		<script src="js/services/ServiceDeclare.js"></script>
-		<script src="js/services/Base64Service.js"></script>
-		<script src="js/services/AuthService.js"></script>
-		<script src="js/services/PictureService.js"></script>
-		<script src="js/services/GalleryService.js"></script>
+        
+		<script src="js/main/config.js"></script>
+        <script src="js/main/appCtrl.js"></script>
+        
+        <script src="js/utility/config.js"></script>
+        <script src="js/utility/errorService.js"></script>
+        
+		<script src="js/user/config.js"></script>
+        <script src="js/user/base64Service.js"></script>
+        <script src="js/user/authService.js"></script>
+        
+        <script src="js/camera/config.js"></script>
+        <script src="js/camera/cameraService.js"></script>
+        <script src="js/camera/cameraSnapCtrl.js"></script>
+        <script src="js/camera/cameraUploadCtrl.js"></script>
+        
+        <script src="js/gallery/config.js"></script>
+        <script src="js/gallery/galleryService.js"></script>
+        <script src="js/gallery/galleryCtrl.js"></script>
 	</head>
 
-<body ng-app="rateMeApp">
+<body ng-app="rateMe">
     <ion-nav-view></ion-nav-view>
 </body>
 </html>

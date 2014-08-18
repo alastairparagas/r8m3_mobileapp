@@ -1,29 +1,35 @@
 var gulp = require('gulp');
-var jsdoc = require('gulp-jsdoc');
+var shell = require('gulp-shell');
 var sass = require('gulp-sass');
 var watch = require('gulp-watch');
 var wiredep = require('wiredep').stream;
 
 
-gulp.task('stylesheets', function () {
+gulp.task('sass', function () {
 	
 	return gulp.src('www/scss/**/*.scss')
 		.pipe( sass(
 			{
-				outputStyle: 'compressed' 
+				outputStyle: 'compressed'
 			}
-		) )
+		))
 		.pipe( gulp.dest('www/css') );
 	
 });
 
+gulp.task('styles', ['sass']);
 
-gulp.task('scripts', function () {
 
-	return gulp.src('www/js/**/*.js')
-		.pipe( jsdoc('dev-docs') );
-		
-});
+gulp.task('angular-documentation', shell.task([
+    'node node_modules/angular-jsdoc/node_modules/jsdoc/jsdoc.js -p' + 
+    ' -c node_modules/angular-jsdoc/conf.json' +
+    ' -t node_modules/angular-jsdoc/template' +
+    ' -d dev-docs' + 
+    ' README.md' +
+    ' -r www/js'
+]));
+
+gulp.task('scripts', ['angular-documentation']);
 
 
 gulp.task('bower', function () {
@@ -39,11 +45,11 @@ gulp.task('bower', function () {
 
 gulp.task('watch', function ( ) {
 
-	gulp.watch('www/scss/**/*.scss', ['stylesheets']);
+	gulp.watch('www/scss/**/*.scss', ['styles']);
 	gulp.watch('www/js/**/*.js', ['scripts']);
 	gulp.watch('www/bower_components', ['bower']);
 
 });
 
 
-gulp.task('default', ['scripts', 'stylesheets']);
+gulp.task('default', ['scripts', 'styles']);

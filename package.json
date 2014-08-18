@@ -9,18 +9,20 @@
     "gulp-sass": "^0.7.2",
     "gulp-watch": "^0.6.9",
     "wiredep": "^1.8.2",
+    "angular-jsdoc": "^0.1.1",
+    "gulp-shell": "^0.2.9",
     "gulp-jsdoc": "^0.1.4"
   },
   "cordovaPlugins": [
-	"https://github.com/driftyco/ionic-plugins-keyboard.git",
-	"https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
-	"org.apache.cordova.camera",
-	"org.apache.cordova.console",
-	"org.apache.cordova.device",
-	"org.apache.cordova.dialogs",
-	"org.apache.cordova.file",
-	"org.apache.cordova.file-transfer",
-	"org.apache.cordova.inappbrowser",
-	"org.apache.cordova.network-information"
+    "https://github.com/driftyco/ionic-plugins-keyboard.git",
+    "https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin.git",
+    "org.apache.cordova.camera",
+    "org.apache.cordova.console",
+    "org.apache.cordova.device",
+    "org.apache.cordova.dialogs",
+    "org.apache.cordova.file",
+    "org.apache.cordova.file-transfer",
+    "org.apache.cordova.inappbrowser",
+    "org.apache.cordova.network-information"
   ]
 }

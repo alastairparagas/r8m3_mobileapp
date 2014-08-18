@@ -1,4 +1,4 @@
-$ionicons-font-path: "../bower_components/ionic/fonts" !default;
+$ionicons-font-path: "../bower_components/ionic/release/fonts" !default;
 
 // Our existing color palette: http://paletton.com/#uid=7330C0kbiNE3n+x7mWn8zNqcKI4
 
@@ -22,7 +22,7 @@ $button-calm-border:              darken($calm, 5%);
 $button-calm-active-bg:           $button-calm-border;
 $button-calm-active-border:       $button-calm-border;
 
-$button-balanced-text:            lighten($balanced, 25%);
+$button-balanced-text:            lighten($balanced, 35%);
 $button-balanced-border:          darken($balanced, 5%);
 $button-balanced-active-bg:       $button-balanced-border;
 $button-balanced-active-border:   $button-balanced-border;
@@ -42,10 +42,12 @@ $button-default-border:           $button-positive-border;
 $button-default-active-bg:        $button-positive-active-bg;
 $button-default-active-border:    $button-positive-active-border;
 
+$button-icon-size: 24px;
+
 $button-transparent-bg:           rgba(#ddd, 0.4);
 $button-transparent-text:         #fff;
-$button-transparent-border:       #d1d1d1;
-$button-transparent-active-bg:    rgba(#ddd, 0.7);
-$button-transparent-active-border:#ccc;
+$button-transparent-border:       rgba(lighten($button-transparent-bg, 20%), 0.4);
+$button-transparent-active-bg:    rgba($button-transparent-bg, 0.7);
+$button-transparent-active-border:rgba(lighten($button-transparent-bg, 10%), 0.4);
 
 $popup-width:                     300px;

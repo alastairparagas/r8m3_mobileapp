@@ -1,28 +1,6 @@
 @import "variables";
 
-@font-face{
-    font-family: 'Artbrush';
-    src: url('../fonts/Artbrush.svg') format('svg'), url('../fonts/Artbrush.woff'), url('../fonts/Artbrush.ttf') format('truetype');
-}
-@font-face{
-    font-family: 'SourceSansPro-Regular';
-    src: url('../fonts/SourceSansPro-Regular.svg') format('svg'), url('../fonts/SourceSansPro-Regular.woff') format('woff'), url('../fonts/SourceSansPro-Regular.ttf') format('truetype');
-}
-@font-face{
-    font-family: 'SourceSansPro-Light';
-    src: url('../fonts/SourceSansPro-Light.svg') format('svg'), url('../fonts/SourceSansPro-Light.woff') format('woff'), url('../fonts/SourceSansPro-Light.ttf') format('truetype');
-}
-@font-face{
-    font-family: 'Quicksand';
-    src: url('../fonts/Quicksand.svg') format('svg'), url('../fonts/Quicksand.woff') format('woff'), url('../fonts/Quicksand.ttf') format('truetype');
-}
-
-.Artbrush{ font-family: 'Artbrush', sans-serif; }
-.SourceSansProRegular{ font-family: 'SourceSansPro-Regular', sans-serif; }
-.SourceSansProLight{ font-family: 'SourceSansPro-Light', sans-serif; }
-.Quicksand{ font-family: 'Quicksand', sans-serif; }
-
-
+@import "customFonts";
 @import "../bower_components/ionic/scss/ionic.scss";
 
 // Transparent buttons and bars - we are extending Ionic's functionality
@@ -38,3 +16,5 @@
         @include bar-style($button-transparent-bg, $button-transparent-border, $button-transparent-text);
     }
 }
+
+@import "sideMenu";

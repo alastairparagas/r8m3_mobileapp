@@ -1,0 +1,25 @@
+.menu.menu-left{
+    background: $item-balanced-bg;
+    font-weight: bold !important;
+    .row{
+        padding: 0px !important;
+        .col{
+            font-size: $item-font-size !important;
+            padding: $item-padding !important;
+        }
+    }
+    .item{
+        @include item-style($item-balanced-bg, $item-balanced-bg, #fff);
+        .item-content{
+            background: transparent !important;  
+        }
+        i{
+            font-size: $item-font-size + 5;
+        }
+    }
+    .bar{
+        &.bar-footer, &.bar-header{
+            @include bar-style(darken($item-balanced-bg, 3%), darken($item-balanced-bg, 3%), #fff);   
+        }
+    }
+}

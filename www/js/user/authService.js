@@ -40,7 +40,8 @@
             @private
         */
             settingsDefaults = {
-                smartUpload: true
+                smartUpload: true,
+                compressionRating: 150000
             };
 
         

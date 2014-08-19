@@ -5,12 +5,11 @@
 */
 (function (window) {
     'use strict';
-    var angular = window.angular,
-        jic = window.jic;
+    var angular = window.angular;
     
     
     
-    angular.module('rateMe.camera').service('CameraService', ['$q', '$cordovaNetwork', '$cordovaFile', '$cordovaCamera', 'AuthService', 'ErrorService', function ($q, $cordovaNetwork, $cordovaFile, $cordovaCamera, AuthService, ErrorService) {
+    angular.module('rateMe.camera').service('CameraService', ['$q', '$cordovaNetwork', '$cordovaFile', '$cordovaCamera', 'AuthService', 'ErrorService', 'DeviceService', function ($q, $cordovaNetwork, $cordovaFile, $cordovaCamera, AuthService, ErrorService, DeviceService) {
         
         /**
             @memberof CameraService
@@ -25,22 +24,7 @@
             @description Object that represents the picture's metadata.
             @private
         */
-            pictureMetaData = null,
-        /**
-            @memberof CameraService
-            @var {String|Null} compressedPicture
-            @description String that represents the compressed picture in the form of a DomString.
-            @private
-        */
-            compressedPicture = null,
-        /**
-            @memberof CameraService
-            @var {String|Null} compressedPictureDom
-            @description DOM img element holding reference to the compressed image data.
-            @private
-        */
-            compressedPictureDom = null;
-        
+            pictureMetaData = null;
         /**
             @memberof CameraService
             @description Resets the currently represented picture.
@@ -49,8 +33,6 @@
         function resetPicture() {
             picture = null;
             pictureMetaData = null;
-            compressedPicture = null;
-            compressedPictureDom = null;
         }
         
         
@@ -71,13 +53,20 @@
                     allowEdit : false,
                     saveToPhotoAlbum: false,
                     encodingType: window.Camera.EncodingType.JPEG
-                };
+                },
+                cameraInfo = DeviceService.getCameraInfo(),
+                cameraCompression = AuthService.getSetting("compressionRating");
+            
+            if (AuthService.getSetting("smartUpload") === true) {
+                options.quality = (cameraInfo && cameraInfo.size > cameraCompression && Math.floor(cameraCompression / cameraInfo.size * 50)) || 50;
+            }
 
             $cordovaCamera.getPicture(options).then(function (imageData) {
                 picture = imageData;
                 $cordovaFile.readFileMetadataAbsolute(imageData).then(
                     function (imageMetaData) {
                         pictureMetaData = imageMetaData;
+                        DeviceService.setCameraInfo(imageMetaData);
                         defer.resolve({image: imageData, metadata: imageMetaData});
                     },
                     function (error) {
@@ -96,38 +85,11 @@
         
         /**
             @memberof CameraService
-            @description Lets the user choose a picture from the device's picture gallery/set, and sets whatever picture that is chosen as the represented picture by this service.
+            @description Returns the absolute path of the picture that was obtained from the device's camera.
+            @return {String|Null} Path of the picture if set, Null if not set.
         */
-        this.picturepilePicture = function () {
-            
-        };
-        
-        
-        /**
-            @memberof CameraService
-            @description Compresses the image object that is referenced by the passed in imageDomId and stores it in our private compressedImage variable.
-            @argument {String} imageDomId - ID of the DOM img element whose src is an image that will be compressed.
-        */
-        this.compressPicture = function (imageDomId) {
-            if (typeof imageDomId === "string" && pictureMetaData.size) {
-                compressedPicture = jic.compress(window.document.getElementById(imageDomId), Math.floor(50000 / pictureMetaData.size * 100)).src;
-            }
-        };
-        
-        
-        /**
-            @memberof CameraService
-            @description Returns the absolute path of the picture that was obtained either from the device's camera or picture gallery.
-            @argument {String} [imageDomId] - DOM id of the img element that will hold the compressed image, and the same img element that will be used as a reference of the binary compressed image data to upload to the server.
-            @return {String|Null} "compressed" if the image is compressed and an imageDomId is provided, Path of the picture otherwise, and null if there is no current picture on hold.
-        */
-        this.getPicture = function (imageDomId) {
+        this.getPicture = function () {
             if (typeof picture === "string" && picture) {
-                if (compressedPicture) {
-                    compressedPictureDom = window.document.getElementById(imageDomId);
-                    return compressedPicture;
-                }
-                
                 return picture;
             }
             
@@ -151,7 +113,7 @@
         
         /**
             @memberof CameraService
-            @description Uploads a picture, given the picture's file path, to the server for a normal upload, or uploads the compressed image using JIC if using the smartUpload setting. Checks if the device is online, that the 10-minute anti-spam period is up, and that the provided filePath is of a correct type before trying to upload to the server.
+            @description Uploads a picture, given the picture's file path, to the server. Checks if the device is online, that the 10-minute anti-spam period is up, and that the provided filePath is of a correct type before trying to upload to the server.
             @returns {HttpPromise} Promise resolved on success, rejected on failure.
             @see {@link https://github.com/apache/cordova-plugin-file-transfer/blob/master/doc/index.md Cordova File Transfer Options}
         */
@@ -189,39 +151,26 @@
                 uploadUrl = "http://myrighttoplay.com/R8M3/public/api/v1/image/add-guest";
             }
 
-            if (AuthService.getSetting('smartUpload') && compressedPictureDom !== null) {
-                jic.upload(compressedPictureDom, uploadUrl, options.fileKey, "image.jpg", function (data) {
-                    window.console.log("SUCCESS! USED JIC TO UPLOAD");
-                    defer.resolve(JSON.parse(data));
-                    localStorage.lastSnap = new Date().getTime();
-                    resetPicture();
-                }, function (data) {
-                    var dataObject = JSON.parse(data);
-                    ErrorService.setError('CameraService', dataObject.message);
-                    defer.reject(dataObject);
-                }, function (progressCount) {
-                    defer.notify(progressCount);
-                });
-            } else {
-                $cordovaFile.uploadFile(uploadUrl, picture, options)
-                    .then(
-                        function (data) {
-                            window.console.log("SUCCESS! USED CORDOVA FILE TO UPLOAD");
-                            defer.resolve(JSON.parse(data.response));
-                            localStorage.lastSnap = new Date().getTime();
-                            resetPicture();
-                        },
-                        function (data) {
-                            if (data.message) {
-                                ErrorService.setError('CameraService', data.message);
-                            }
-                            defer.reject(data);
-                        },
-                        function (data) {
-                            defer.notify(data);
+            $cordovaFile.uploadFile(uploadUrl, picture, options)
+                .then(
+                    function (data) {
+                        defer.resolve(JSON.parse(data.response));
+                        localStorage.lastSnap = new Date().getTime();
+                        resetPicture();
+                        $cordovaCamera.cleanup();
+                    },
+                    function (data) {
+                        if (data.message) {
+                            ErrorService.setError('CameraService', data.message);
                         }
-                    );
-            }
+                        defer.reject(data);
+                    },
+                    function (data) {
+                        if (data.lengthComputable === true) {
+                            defer.notify({loaded: data.loaded, total: data.total});
+                        }
+                    }
+                );
             
             return defer.promise;
         };

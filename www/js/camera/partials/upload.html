@@ -6,13 +6,18 @@
         <div id="snapUpload" class="row row-center" ng-show="uploadProgress" 
              ng-style="{ 'height': uploadProgress + '%' }" ng-class="uploadFailed ? 'failed' : 'notFailed'">
             <div class="col">
-                <span ng-hide="uploadFailed">
+                <span ng-if="!uploadFailed">
                     <h1>{{ uploadProgress || 0 }}% Uploaded</h1>
-                    <h2 ng-show="uploadProgress === 100">Image code: {{ uploadResponse.info.id }}</h2>
+                    <span ng-if="uploadProgress === 100">
+                        <h2>Image code: {{ uploadResponse.info.id }}</h2>
+                        <a href="#/app/home" class="button button-block button-transparent animated fadeInDown">Go Home</a>
+                    </span>
                 </span>
-                <span ng-show="uploadFailed">
+                <span ng-if="uploadFailed">
                     <h1>Upload Failed.</h1>
                     <h2 ng-show="uploadResponse.message">{{ uploadResponse.message }}</h2>
+                    <a href="#/app/camera-snap" class="button button-block button-transparent animated fadeInDown">Retake Picture</a>
+                    <a href="#/app/home" class="button button-block button-transparent animated fadeInDown">Go Home</a>
                 </span>
             </div>
         </div>
@@ -21,17 +26,17 @@
     
     <ion-footer-bar class="bar-balanced">
         <div class="col-33 text-center">
-            <a class="button button-clear" href="#/app/camera-snap">
+            <a class="button button-clear" href="#/app/camera-snap" ng-disabled="buttonsState.undo">
                 <i class="customIcon icon icon-action-undo"></i>
             </a>
         </div>
         <div class="col-33 text-center">
-            <a class="button button-clear" href="#/app/home">
+            <a class="button button-clear" href="#/app/home" ng-disabled="buttonsState.home">
                 <i class="customIcon icon icon-home"></i>
             </a>
         </div>
         <div class="col-33 text-center">
-            <button class="button button-clear" ng-click="uploadPicture()" ng-disabled="uploadFailed">
+            <button class="button button-clear" ng-click="uploadPicture()" ng-disabled="buttonsState.upload">
                 <i class="customIcon icon icon-cloud-upload"></i>
             </button>
         </div>

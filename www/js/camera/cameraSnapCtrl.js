@@ -11,20 +11,8 @@
         CameraService.snapPicture("imageSnapStage")
             .then(
                 function (data) {
-                    $scope.loading();
                     $scope.picture = data.image;
-                    $scope.$watch(
-                        function () {
-                            return window.document.getElementById("imageSnapStage").complete;
-                        },
-                        function (booleanCompleteness) {
-                            if (booleanCompleteness === true) {
-                                CameraService.compressPicture("imageSnapStage");
-                                $scope.loadingEnd();
-                                $state.go('app.camera-upload');
-                            }
-                        }
-                    );
+                    $state.go('app.camera-upload');
                 },
                 function (data) {
                     if (typeof data.message !== "undefined") {

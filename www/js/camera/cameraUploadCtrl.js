@@ -8,8 +8,18 @@
         
         $scope.picture = CameraService.getPicture("imageUploadStage");
         $scope.uploadProgress = 0;
+        // True - hide button, False - show button
+        $scope.buttonsState = {
+            undo: false,
+            home: false,
+            upload: false
+        };
         $scope.uploadFailed = false;
         $scope.uploadResponse = {};
+        
+        if ($scope.picture === null || $scope.picture === undefined) {
+            $state.go('app.home');
+        }
         
         
         
@@ -31,16 +41,24 @@
                     function (data) {
                         $scope.uploadProgress = 100;
                         $scope.uploadResponse = data;
+                        $scope.buttonsState.upload = true;
+                        $scope.buttonsState.home = false;
+                        $scope.buttonsState.undo = true;
                     },
                     function (data) {
                         $scope.uploadFailed = true;
                         $scope.uploadProgress = 100;
                         $scope.uploadResponse = data;
+                        $scope.buttonsState.upload = false;
+                        $scope.buttonsState.home = false;
+                        $scope.buttonsState.undo = false;
                     },
                     function (data) {
-                        if (data > $scope.uploadProgress) {
-                            $scope.uploadProgress = data;
-                        }
+                        $scope.uploadProgress = Math.floor(data.loaded / data.total * 100);
+                        $scope.buttonsState.upload = true;
+                        $scope.buttonsState.home = true;
+                        $scope.buttonsState.undo = true;
+                        $scope.$apply();
                     }
                 );
 

@@ -1,3 +1,170 @@
+### 1.0.0-beta.14 "magnesium-mongoose" (2014-12-15)
+
+#### Refactor:
+
+* **Cached Views:**
+  * Previously, as a user navigated an app, each exiting view’s element and scope would be destroyed. If the same view was accessed again then the app would have to recreate the element. Views can now be cached to improve performance.
+  * Now, when a view is exited, its elements are left in the DOM, and its scope is disconnected from the cycle. When navigating to a view which is already cached, its scope is reconnected, and the existing element which was left in the DOM becomes the active view.
+  * This also allows for scroll position of previous views to be maintained (without skippy jumps).
+  * [Config variables](http://ionicframework.com/docs/nightly/api/provider/$ionicConfigProvider/) can be used to disable view caching, _**IE** set to 0_, or change the maximum number of views to cache.
+  * Individual [ionViews](http://ionicframework.com/docs/nightly/api/directive/ionView/) can disable caching by using the `cache-view="false"` attribute, or from its `$stateProvider.state` config.
+  * **Note:** Views with many large images or videos should not be cached.
+  * The [ionNavView docs](http://ionicframework.com/docs/nightly/api/directive/ionNavView/) have more further documentation.
+* **Navigation:** Refactored for improved performance
+  * Reduced DOM manipulations
+  * Cached Views _(see above)_
+  * Increased transition FPS for smoother animation
+* **Angular v1.3:**
+  * Upgraded Ionic to work with Angular v1.3.
+  * In general Ionic just works with the upgrade, but the required change was that animations in v1.3 uses promises, whereas in v1.2 animations used callbacks.
+  * Check out the [Angular 1.3 ng-europe presentation](https://www.youtube.com/watch?v=ojMy6m_fcxc) and [Migrating from 1.2 to 1.3](https://docs.angularjs.org/guide/migration) for more information.
+
+
+#### Features:
+
+* **Platform Specific Transitions:** Transitions between views now default to the transition style appropriate for each platform.
+  * For example, iOS will move forward by transitioning the entering view from right to center, and the exiting view from center to left. However, Android will transition with the exiting view going from bottom to center, covering the previous view, which remains stationary.
+  * Platform transitions are automatically applied by default, but [config variables](http://ionicframework.com/docs/nightly/api/provider/$ionicConfigProvider/) and custom CSS allows these defaults to be easily overridden.
+* **ionNavTitle**: Use the nav title directive to set custom HTML the for the header bar's title from within an ionView template. This gives each view the ability to specify its own custom title, such as an image or any HTML, rather than being text-only.
+  * [ionNavTitle docs](http://ionicframework.com/docs/nightly/api/directive/ionNavTitle/)
+* **enable-menu-with-back-views:** In many mobile apps, sidemenus are disabled on child views. The `enable-menu-with-back-views` attribute determines if the side menu is enabled when the back button is showing.
+  * When set to `false`, any buttons/links with the `menuToggle` directive will be hidden, and the user cannot swipe to open the menu.
+  * When going back to the root page of the side menu (the page without a back button visible), menuToggle buttons will show again, and menus will be re-enabled.
+  * [ionSideMenus docs](http://ionicframework.com/docs/nightly/api/directive/ionSideMenus/)
+* **menuClose:** Closes a side menu which is currently opened. Additionally, the menuClose directive will now cause transitions to not animate between views while the menu is being closed.
+  * [menuClose docs](http://ionicframework.com/docs/nightly/api/directive/menuClose/)
+* **ionNavBackButton:** The back button icon and text will automatically update to platform config defaults, such as adjusting to the platform back icon.
+  * To take advantage of this, the `ionNavBackButton` directive should now be empty, _**IE**_ `<ion-nav-back-button></ion-nav-back-button>`.
+  * The back button can still be fully customized like it could before, but without any inner content it knows to style using platform configs.
+  * [ionNavBackButton docs](http://ionicframework.com/docs/nightly/api/directive/ionNavBackButton/)
+* **navBar button primary/secondary sides:** Primary and secondary sides are now the recommended values for the `side` attribute, such as `<ion-nav-buttons side="primary">`.
+  * Primary buttons generally map to the left side of the header, and secondary buttons are generally on the right side.
+  * However, their exact locations are platform specific.
+  * For example, in iOS the primary buttons are on the far left of the header, and secondary buttons are on the far right, with the header title centered between them.
+  * For Android however, both groups of buttons are on the far right of the header, with the header title aligned left.
+  * Recommendation is to always use `primary` and `secondary` so buttons correctly map to the side familiar to users of a platform.
+  * In cases where buttons should always be on an exact side, both `left` and `right` sides are still available.
+  * [ionNavButtons docs](http://ionicframework.com/docs/nightly/api/directive/ionNavButtons/)
+* **$ionicView Events:** Now that views can be cached, controllers may only load once, which may change how you'd expect data to load.
+  * **New events have been added that get emitted from the view's scope**: `$ionicView.enter`, `$ionicView.leave`, `$ionicView.loaded`.
+  * These events also contain data about the view, such as the title and if the back button should show, along with transition data, such as the transition type and direction that was used.
+  * [ionView docs](http://ionicframework.com/docs/nightly/api/directive/ionView/)
+* **Override Transition Type and Direction:** As a user navigates the app, Ionic automatically applies the appropriate transition type for the platform, and the direction the user is navigating. Both can be overridden in numerous ways: config variable, view attribute, stateProvider property, or attribute on the button/link that initiated the transition.
+* **navDirection:** An attribute directive that sets the direction which the nav view transition should animate.
+  * [navDirection docs](http://ionicframework.com/docs/nightly/api/directive/navDirection/)
+* **navTransition:** An attribute directive that sets the transition type which the nav view transition should use when it animates. Using `none` will disable an animation.
+  * [navTransition docs](http://ionicframework.com/docs/nightly/api/directive/navTransition/)
+* **$ionicConfigProvider:** Configs can be changed using the `$ionicConfigProvider` during the configuration phase of your app. `$ionicConfig` can also set and get config values during the run phase and within the app itself.
+  * [$ionicConfigProvider docs](http://ionicframework.com/docs/nightly/api/provider/$ionicConfigProvider/)
+
+
+#### Breaking Changes:
+
+* **Animation CSS:** The CSS for view transitions have changed. This is a breaking change only if Ionic apps had customized Ionic’s animation CSS. Additionally, all keyframe animations were removed since they weren't being used. _(20Kb saved!)_
+* **$ionicPlatformDefaults:** Platform config variables are no longer in the $ionicPlatformDefaults constant, but within [`$ionicConfigProvider`](http://ionicframework.com/docs/nightly/api/provider/$ionicConfigProvider/).
+* **navClear:** The navClear directive was created to do what the new side menu `enable-menu-with-back-views` attribute accomplishes and has therefore been removed. Additionally, the new `navTransition` and `navDirection` directives are more useful and granular.
+* **scrollView.rememberScrollPosition:** This method has been removed since it is no longer needed with cached views.
+
+
+#### Deprecated:
+
+* **ionView.title:** The `ionView` directive used the `title` attribute, but this can cause the tooltip to show up on desktop browsers. The `title` attribute will still work for backwards compatibility, but we now recommend using `view-title`, such as `<ion-view view-title=”My Title”>`.
+* **ionNavView animation attribute:** The animation attribute can be safely removed as it is no longer used for nav views. Instead use `$ionicConfig`.
+* **ionNavBar animation attribute:** The animation attribute can be safely removed as it is no longer used for nav bars. Instead use `$ionicConfig`.
+* **$ionicNavBarDelegate#changeTitle:** To set a title you now use `title(value)` (with an argument). The `changeTitle()` method will now produce a console.warning message, but it can still be used for this version.
+* **$ionicNavBarDelegate#setTitle:** To set a title you now use `title(value)` (with an argument). The `setTitle()` method will now produce a console.warning message, but it can still be used for this version.
+* **$ionicNavBarDelegate#getTitle:** To get a title you now use the return value of `title()` (no argument). The `getTitle()` method will now produce a console.warning message, but it can still be used for this version.
+* **$ionicNavBarDelegate#back:** The `back()` method has been removed in favor of using `$ionicHistory.goBack()`. Additionally, `$ionicGoBack()` is added to the rootScope. [$ionicHistory docs](http://ionicframework.com/docs/nightly/api/service/$ionicHistory/)
+* **$ionicNavBarDelegate#getPreviousTitle:** The `getPreviousTitle()` method has been removed in favor of `$ionicHistory.backTitle()`. [$ionicHistory docs](http://ionicframework.com/docs/nightly/api/service/$ionicHistory/)
+* **$ionicViewService:** In the navigation refactoring, $ionicViewService was split up into two factories, `$ionicViewSwitcher` and [`$ionicHistory`](http://ionicframework.com/docs/nightly/api/service/$ionicHistory/). The `$ionicHistory` is largely what `$ionicViewService` was, but now between the two there is a better separation of concerns for improved testing. [$ionicHistory docs](http://ionicframework.com/docs/nightly/api/service/$ionicHistory/)
+
+
+
+### 1.0.0-beta.13 "lanthanum-leopard" (2014-09-24)
+
+
+#### Bug Fixes
+
+* **card:** less intense box shadow ([95d3f2e3](https://github.com/driftyco/ionic/commit/95d3f2e3c99dd9bae8c2394e945aaf3060ace5ec))
+* **click:** remove native click prevent 400ms later ([20d567f8](https://github.com/driftyco/ionic/commit/20d567f81c1dcdb537d7acf83a7afae7961e8286), closes [#2204](https://github.com/driftyco/ionic/issues/2204))
+* **exposeAsideWhen:** disable with isEnabled=false ([6f79a5e5](https://github.com/driftyco/ionic/commit/6f79a5e5c8c334756b03da85a6a4992fb2f6b92b), closes [#2210](https://github.com/driftyco/ionic/issues/2210))
+* **history:** tabs lose history after switching tabs ([68de8ed9](https://github.com/driftyco/ionic/commit/68de8ed91064c45da505192d154138395bd9dad1), closes [#1978](https://github.com/driftyco/ionic/issues/1978))
+* **keyboard:** android scroll stuck ([74de015c](https://github.com/driftyco/ionic/commit/74de015c221962aae8e48c1a81481ec6fc706f5e))
+* **loading:** prevent spinners in loading view from causing reflows when hidden. ([767ce6a3](https://github.com/driftyco/ionic/commit/767ce6a3b4d6e20d383c47ea72efe4208301a108), closes [#2013](https://github.com/driftyco/ionic/issues/2013))
+* **menuClose:** do not close if aside exposed ([b239eb9e](https://github.com/driftyco/ionic/commit/b239eb9ed3d53c3a194d82f3ca25e66cd20f0de8))
+* **nav:** prevent flickers between views ([03086ed2](https://github.com/driftyco/ionic/commit/03086ed2288284ebacb4eb075e65e622a9947dfa))
+* **popup:**
+  * set popup head padding equal to popup body padding ([b873190b](https://github.com/driftyco/ionic/commit/b873190bc625a48e2523701f170334bb4ab9fe81))
+  * fill popup width of Android 4.1-4.3 buttons ([581656fd](https://github.com/driftyco/ionic/commit/581656fda4444fc4b46d3ef07b96da4b93a39fec), closes [#2209](https://github.com/driftyco/ionic/issues/2209))
+* **scroll:** ensure scrollView objects exist ([8883c6cc](https://github.com/driftyco/ionic/commit/8883c6ccc5877fcc8a55910f77fa04a7742285c0))
+* **scrollView:** check that element has not yet been GC'd before removing event listeners in $des ([5e8250b1](https://github.com/driftyco/ionic/commit/5e8250b119063a9ba533db62a3aad317afaf75a5))
+* **sideMenu:**
+  * Prevent is-enabled="false" from blocking current view interaction. ([cedee574](https://github.com/driftyco/ionic/commit/cedee5749a892452809ae115b0e180ed1d62fbd7), closes [#1973](https://github.com/driftyco/ionic/issues/1973))
+  * allow `edge-drag-threshold` for right side menus. ([cb066434](https://github.com/driftyco/ionic/commit/cb0664340355d0d4455f504ac6b4a232e8e9fd85), closes [#2081](https://github.com/driftyco/ionic/issues/2081))
+* **splitView:** disable menu toggles on exposed aside ([ed3e9e30](https://github.com/driftyco/ionic/commit/ed3e9e30ce93c3ec91177352709900aff32bec26), closes [#2182](https://github.com/driftyco/ionic/issues/2182))
+* **tabs:** fix android untyled android tab ([aa7e9dd7](https://github.com/driftyco/ionic/commit/aa7e9dd7a961c7f7706531934c74a6e99cc8fc08))
+* **templateCache:** make sure $state is passed config options before checking what they are ([cb9b81d5](https://github.com/driftyco/ionic/commit/cb9b81d57ed7da84c0d1429e6dfde2e12bf1d9fc))
+* **titles:** error during quick transition changes ([fe9f43d1](https://github.com/driftyco/ionic/commit/fe9f43d17f11263e64a0168cabce28b8365fe9a8))
+
+
+#### Features
+
+* **angular:**
+  * upgrade to AngularJS v1.2.25 ([bcfecb4f](https://github.com/driftyco/ionic/commit/bcfecb4f585955a9a1b81a5e7ad6b762e2a872f7))
+  * upgrade to AngularJS v1.2.24 ([487e7a97](https://github.com/driftyco/ionic/commit/487e7a97967339b4542f6177923660dacaa2cd42))
+* **cordovaEvents:** $ionicPlatform.on method ([046ad53b](https://github.com/driftyco/ionic/commit/046ad53b20dcbcfdbc5f48e63975920486de596f), closes [#2219](https://github.com/driftyco/ionic/issues/2219))
+* **refresher:** Improve refresher animation. Allow pulling icon rotation to be disabled. ([db27fb11](https://github.com/driftyco/ionic/commit/db27fb116cd3139b271cf9d20c462fb3746f25df))
+
+
+### 1.0.0-beta.12 "krypton-koala" (2014-09-10)
+
+
+#### Bug Fixes
+
+* **back button:** do not animate back button transition if the title doesn't change. ([d3c8a1b2](https://github.com/driftyco/ionic/commit/d3c8a1b2a4a87c20639f11a2402c68b4e740db6f), closes [#1858](https://github.com/driftyco/ionic/issues/1858))
+* **buttons:** centering icons on <a> tag buttons. ([69442d5a](https://github.com/driftyco/ionic/commit/69442d5a8ebb34295ea8d5f8b85b262d6a72e75a), closes [#2074](https://github.com/driftyco/ionic/issues/2074))
+* **classList:** error on svg elements ([98629d42](https://github.com/driftyco/ionic/commit/98629d424351c823a055b2c358d642adaa8e78f1), closes [#1795](https://github.com/driftyco/ionic/issues/1795))
+* **collectionRepeat:**
+  * always render data correctly with before/after isblings ([120f99ee](https://github.com/driftyco/ionic/commit/120f99ee79fe37feab6401290526298bf7834951), closes [#2025](https://github.com/driftyco/ionic/issues/2025))
+  * simplify item reusing process to fix rare reuse error ([8c6d5f2c](https://github.com/driftyco/ionic/commit/8c6d5f2c96b132c8a54b3ff4f9bf6effa7411d8d), closes [#1777](https://github.com/driftyco/ionic/issues/1777))
+  * with ngHref, make href attr erase if falsy ([977f6818](https://github.com/driftyco/ionic/commit/977f681818d1a86a4a5b1890ef24cf0412b6d1ff), closes [#1674](https://github.com/driftyco/ionic/issues/1674))
+  * rerender when $ionicScrollDelegate resizes ([5e025fbb](https://github.com/driftyco/ionic/commit/5e025fbb016c2c3f36f18e35355e0f30cf55ff96), closes [#1777](https://github.com/driftyco/ionic/issues/1777))
+  * ignore spacing of hidden elements (ion-refresher) ([9bfa3bd1](https://github.com/driftyco/ionic/commit/9bfa3bd18b099be14be2e99e0ba380c09702b75b), closes [#1970](https://github.com/driftyco/ionic/issues/1970))
+* **ionContent:** fix rare positioning bug when overflow-scroll is enabled ([84b5e919](https://github.com/driftyco/ionic/commit/84b5e91975c04cd6f5778086f711f8ac436cf588), closes [#1281](https://github.com/driftyco/ionic/issues/1281))
+* **item:** clicks climb 5 levels looking for an item to activate, but not 6. ([840c014b](https://github.com/driftyco/ionic/commit/840c014b27b5cf0616f4f1191555ee20c772ab85), closes [#1921](https://github.com/driftyco/ionic/issues/1921))
+* **keyboard:** screen.height fallback for window.innerHeight ([77847f49](https://github.com/driftyco/ionic/commit/77847f4963143b9443d0ecde65622daa6c64ef9f), closes [#2168](https://github.com/driftyco/ionic/issues/2168))
+* **loading:** potential race condition with showing and hiding loading in same watch cycle ([65aece2a](https://github.com/driftyco/ionic/commit/65aece2aadb47c3f7d692aaa687afe6872581179))
+* **menuContent:** gestures do not stop_browser_behavior ([df578585](https://github.com/driftyco/ionic/commit/df5785852111f7bb5c913ac9e3237b107d5b9838), closes [#421](https://github.com/driftyco/ionic/issues/421))
+* **platform:** fullscreen method will not offset footer by 20px ([b1f94da2](https://github.com/driftyco/ionic/commit/b1f94da27e265ca32698b86785073d53208e6679))
+* **popup:**
+  * fix alignment, backdrop not fading out ([6d859f48](https://github.com/driftyco/ionic/commit/6d859f4876e07c4650e459b9e0d850aff380521c))
+  * only override prompt input if template includes HTML ([044fac4d](https://github.com/driftyco/ionic/commit/044fac4d77a9c6dad94bdd5708ec0cea0a4b2922))
+* **refresher:** finish animating before changing icon, hide when not in use ([c336e8ed](https://github.com/driftyco/ionic/commit/c336e8ede8a1f83ef2a4a567121cce0d82aa78e8))
+* **reorder:**
+  * reorder drag threshold are equal for going up and down. ([6f5b6c24](https://github.com/driftyco/ionic/commit/6f5b6c24c607d4fe609756616ff6ea4a6e1a4ef1), closes [#1394](https://github.com/driftyco/ionic/issues/1394))
+  * item click handlers dont fire when tapping on reorder icon ([cc18a64b](https://github.com/driftyco/ionic/commit/cc18a64bf4ad2fc474d6d83288b8fcdcc368e02d))
+* **scroll:**
+  * calculate padding-bottom ([ba3600df](https://github.com/driftyco/ionic/commit/ba3600dfb4d2652b6ded87e085c4186c5bf22f31), closes [#2174](https://github.com/driftyco/ionic/issues/2174))
+  * remove isContentEditable from ignoreScrollStart ([caf12721](https://github.com/driftyco/ionic/commit/caf12721869a9efc7ca660e4f4b7943ad3eb4b44), closes [#2091](https://github.com/driftyco/ionic/issues/2091))
+* **scrollView:** resolve memory leaks with holding element references ([c5966bba](https://github.com/driftyco/ionic/commit/c5966bba054001bfc719140bc25ab10e717f7193))
+* **sideMenu:**
+  * close menu w/ drag on Android 4.4 ([a49f3747](https://github.com/driftyco/ionic/commit/a49f37470629a730dd8a16785409eb11bf4fc1db), closes [#2102](https://github.com/driftyco/ionic/issues/2102))
+  * fix stopping content scrolling ([944d2595](https://github.com/driftyco/ionic/commit/944d2595af5435dd8efa38ed1e54b9ce504a195b))
+
+
+#### Features
+
+* **$ionicBody:** service to simplify body ele interaction ([2c3f1c9f](https://github.com/driftyco/ionic/commit/2c3f1c9f02ea3f2a90054556637a11f142010764))
+* **$ionicConfigProvider:** add $ionicConfigProvider ([2643cffc](https://github.com/driftyco/ionic/commit/2643cffc19c65ad292ecc7069516427a71b43332))
+* **$ionicScrollDelegate:** expose zoomBy and zoomTo methods ([029f8f33](https://github.com/driftyco/ionic/commit/029f8f33533115f7da95722d6fd596adfadd6a48), closes [#1977](https://github.com/driftyco/ionic/issues/1977))
+* **ionContent:** add `locking` option ([af229072](https://github.com/driftyco/ionic/commit/af229072dfce16709bcd213333005e523fa9b162), closes [#2034](https://github.com/driftyco/ionic/issues/2034))
+* **ionScroll:** add locking option ([cc8f31d8](https://github.com/driftyco/ionic/commit/cc8f31d8e8cd145bdcc7f3a0309c3c3b21506a88), closes [#2034](https://github.com/driftyco/ionic/issues/2034))
+* **popover:** support popping from bottom or top of screen ([5d06c4ae](https://github.com/driftyco/ionic/commit/5d06c4aef8bf39703f9f4f32de52dad7749d1de5), closes [#1986](https://github.com/driftyco/ionic/issues/1986))
+* **scroll-content:** add 1px padding-top ([e5b5906c](https://github.com/driftyco/ionic/commit/e5b5906cb7693b63e4c8059893b791214aed26c1))
+* **splitView:** expose side menu on large viewport ([b69aa548](https://github.com/driftyco/ionic/commit/b69aa5485f90efb295547732dcaa87507abc0bdd))
+* **templateCache:** automatically cache template files to prevent flicker on page navigation and imp ([944a92b0](https://github.com/driftyco/ionic/commit/944a92b08d40a7a4fb7e1e4727af9a2f8df3774f))
+
+
 ### 1.0.0-beta.11 "indium-iguana" (2014-08-06)
 
 
@@ -29,7 +196,7 @@
 
 #### Breaking Changes
 
-* 
+*
 ion-radio no longer has an isolate scope.
 This will break your radio only if you were relying upon the radio having an isolate scope: if you were referencing `$parent.value` as
 the ng-disabled attribute, for example.

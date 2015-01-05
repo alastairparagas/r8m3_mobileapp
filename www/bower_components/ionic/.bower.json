@@ -1,6 +1,6 @@
 {
   "name": "ionic",
-  "codename": "indium-iguana",
+  "codename": "magnesium-mongoose",
   "homepage": "https://github.com/driftyco/ionic",
   "authors": [
     "Max Lynch <max@drifty.com>",
@@ -47,20 +47,18 @@
     "js/ionic.js"
   ],
   "dependencies": {
-    "angular": "~1.2.17",
-    "angular-animate": "~1.2.17",
-    "angular-sanitize": "~1.2.17",
-    "angular-ui-router": "0.2.10",
-    "collide": "1.0.0-beta.1"
+    "angular": "1.3.6",
+    "angular-animate": "1.3.6",
+    "angular-sanitize": "1.3.6",
+    "angular-ui-router": "0.2.13"
   },
-  "_release": "ce3f035595",
+  "_release": "46f56ba4e1",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "ce3f0355957cfab93a3ce005acda4accbda1ab8b"
+    "commit": "46f56ba4e11aebac4e7cfca3f87421e27a4f34e6"
   },
   "_source": "git://github.com/driftyco/ionic.git",
   "_target": "master",
-  "_originalSource": "ionic",
-  "_direct": true
+  "_originalSource": "ionic"
 }

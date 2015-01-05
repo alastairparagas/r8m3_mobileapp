@@ -7,10 +7,10 @@
     "use strict";
     var angular = window.angular;
 
-    
-    
+
+
     angular.module('rateMe.user').service('AuthService', ['Base64Service', '$q', '$http', '$cordovaNetwork', '$cordovaToast', function (Base64, $q, $http, $cordovaNetwork, $cordovaToast) {
-        
+
         /**
             @memberof AuthService
             @var {Object} user
@@ -23,7 +23,7 @@
                 username: null,
                 password: null,
                 settings: {
-                    
+
                 }
             },
         /**
@@ -44,7 +44,7 @@
                 compressionRating: 150000
             };
 
-        
+
         /**
             @memberof AuthService
             @description Manually sets provided user for this session, treats them as logged in, creates authorization header for our Angular requests to the server, and sets default settings if they already did not have one. Does not check against the server for valid credentials.
@@ -56,7 +56,7 @@
         */
         function setUser(username, password, userid, settings) {
             var settingsKey;
-            
+
             user = {
                 id: userid,
                 encodedCredentials: Base64.encode(username + ":" + password),
@@ -65,17 +65,17 @@
                 settings: settings || {}
             };
             isLoggedIn = true;
-            
+
             $http.defaults.headers.common.Authorization = 'Basic ' + user.encodedCredentials;
-            
+
             angular.forEach(settingsDefaults, function (value, key) {
                 if (!user.settings.hasOwnProperty(key) || user.settings[key] === undefined || user.settings[key] === null) {
                     user.settings[key] = settingsDefaults[key];
                 }
             });
         }
-        
-        
+
+
         /**
             @memberof AuthService
             @description Resets the userObject that represents the currently logged in user
@@ -88,13 +88,13 @@
                 username: null,
                 password: null,
                 settings: {
-                    
+
                 }
             };
             isLoggedIn = false;
         }
-        
-        
+
+
         /**
             @memberof AuthService
             @description Gets the user information stored in this session. Abstracts away properties that should be kept secret.
@@ -105,8 +105,8 @@
             delete userObject.password;
             return userObject;
         };
-        
-        
+
+
         /**
             @memberof AuthService
             @description Returns the constructed authHeaders for the current user
@@ -115,18 +115,16 @@
         this.authHeaders = function () {
             var AuthHeaderObject = {};
             if (user.encodedCredentials !== null) {
-                AuthHeaderObject = {'Authorization': 'Basic ' + user.encodedCredentials};
-                return AuthHeaderObject;
+                AuthHeaderObject.Authorization = 'Basic ' + user.encodedCredentials;
             }
-            
             return AuthHeaderObject;
         };
-        
-        
+
+
         /**
             @memberof AuthService
             @description Permanently stores current user as "currentUser" into localStorage. Unless they manually log out, they will be automatically logged in to the app because we are persisting their information.
-            @argument {Object} userObject Object that holds the current user's information. 
+            @argument {Object} userObject Object that holds the current user's information.
             @see user property of AuthService to see what properties this object has to have.
             @private
         */
@@ -135,8 +133,8 @@
                 localStorage.currentUser = JSON.stringify(user);
             }
         }
-        
-        
+
+
         /**
             @memberof AuthService
             @description Gets the localStorage-stored user that was stored as a currentUser.
@@ -150,11 +148,11 @@
                     return currentUser;
                 }
             }
-            
+
             return null;
         }
 
-        
+
         /**
             @memberof AuthService
             @description Sets the device settings for our user
@@ -166,7 +164,7 @@
             localStorage.currentUser = JSON.stringify(user);
         };
 
-        
+
         /**
             @memberof AuthService
             @description Gets the device settings from our user
@@ -176,8 +174,8 @@
         this.getSetting = function (key) {
             return user.settings[key] || settingsDefaults[key] || null;
         };
-        
-        
+
+
         /**
             @memberof AuthService
             @description Informs whether the application is in a "logged-in" state or not.
@@ -187,7 +185,7 @@
             return isLoggedIn;
         };
 
-        
+
         /**
             @memberof AuthService
             @description Logs the user in. This is checked against the user to see if the user exists and if the password provided matches the one stored under the user's account on the server.
@@ -203,20 +201,20 @@
                 defer.resolve({message: "Already logged in. Please log out to log in as another user."});
                 return defer.promise;
             }
-            
+
             if (storedCurrentUser !== null) {
-                
+
                 setUser(storedCurrentUser.username, storedCurrentUser.password, storedCurrentUser.id, storedCurrentUser.settings);
                 defer.resolve({message: "Automatically logging in."});
-                
+
             } else if (typeof username === "string" && typeof password === "string") {
-                
+
                 if ($cordovaNetwork.isOffline()) {
                     $cordovaToast.show("No internet connection.", "long", "bottom");
                     defer.reject({message: "No internet connection. Cannot check credentials."});
                     return defer.promise;
                 }
-                
+
                 $http.post("http://myrighttoplay.com/R8M3/public/api/v1/user/login", {'username': username, 'password': password})
                     .success(function (response) {
                         setUser(username, password, response.info.id);
@@ -225,17 +223,17 @@
                     }).error(function (response) {
                         defer.reject(response);
                     });
-                
+
             } else {
-                    
+
                 defer.reject({mesage: "Username and/or password not provided."});
-                
+
             }
 
             return defer.promise;
         };
 
-         
+
         /**
             @memberof AuthService
             @description Resets the user object and removes our application's isLoggedIn state, deletes Authorization headers, and removes currentUser from localStorage.
@@ -245,15 +243,15 @@
             resetUser();
             localStorage.removeItem("currentUser");
         };
-        
-        
+
+
         /**
             @memberof AuthService
             @description Registers the user into our application.
             @returns {HttpPromise} Promise resolved on success, rejected on failure.
         */
         this.register = function (infoData) {
-            
+
             var defer = $q.defer();
 
             if ($cordovaNetwork.isOffline()) {
@@ -275,9 +273,9 @@
             return defer.promise;
         };
 
-        
+
     }]);
-    
-    
-    
+
+
+
 }(window));
